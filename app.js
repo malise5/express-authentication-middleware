@@ -1,8 +1,9 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const userRoutes = require("./src/routes/userRoutes");
 const morgan = require("morgan");
 const app = express();
+
+//assign app
 app.use(express.json());
 app.use(morgan("dev"));
 
