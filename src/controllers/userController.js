@@ -1,13 +1,31 @@
+const { response } = require("express");
 const User = require("./../model/user");
 
+//BODY VALIDATION
+exports.validate = async (req, res, next) => {
+    try {
+        if (!req.body.name || !req.body.email) {
+            return res.status(404).json({
+                status: "Invalid",
+                message: "Please enter a name or email address",
+            });
+        }
+    } catch (error) {
+        res.json({
+            status: "Internal Server Error",
+            message: error.message,
+        });
+    }
+    next();
+};
 //GET ALL THE USERS
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
         res.status(200).json({
-            status: "Successfully",
+            status: "Success",
             NumberOfUsers: users.length,
-            users,
+            data: { users },
         });
 
         // res.status(201).send({ message: "get ALl users working" });
@@ -23,9 +41,9 @@ exports.createUsers = async (req, res) => {
     try {
         const user = await User.create(req.body);
         res.status(201).json({
-            status: "Successfully",
+            status: "Success",
             NumberOfUsers: user.length,
-            user,
+            data: { user },
         });
     } catch (error) {
         res.status(404).json({
@@ -40,12 +58,12 @@ exports.getUser = async (req, res) => {
         id = req.params.id;
         const users = await User.findById(id);
         res.status(200).json({
-            status: "Successfully",
+            status: "Success",
             NumberOfUsers: users.length,
-            users,
+            data: { users },
         });
     } catch (error) {
-        res.json({
+        res.status(404).json({
             message: error.message,
         });
     }
@@ -55,14 +73,17 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
     try {
         id = req.params.id;
-        const users = await User.findByIdAndUpdate(id);
+        const users = await User.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true,
+        });
         res.status(200).json({
-            message: "Successfully",
+            status: "Success",
             NumberOfUsers: users.length,
-            users,
+            data: { users },
         });
     } catch (error) {
-        res.json({
+        res.status(404).json({
             message: error.message,
         });
     }
