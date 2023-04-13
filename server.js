@@ -16,7 +16,7 @@ mongoose
     .then((con) => {
         // console.log(con);
         console.log("=============DataBase=======================");
-        console.log("DB onnection successful");
+        console.log("DB Connection successful");
         console.log("====================================");
     })
     .catch((err) => {

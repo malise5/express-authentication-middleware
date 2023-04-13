@@ -21,7 +21,14 @@ exports.validate = async (req, res, next) => {
 //GET ALL THE USERS
 exports.getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        // const exclude = ["sort", "page", "limit", "fields"];
+        // const queryObj = { ...req.query };
+
+        // exclude.forEach((el) => {
+        //     delete queryObj[el];
+        // });
+
+        const users = await User.find(req.query);
         res.status(200).json({
             status: "Success",
             NumberOfUsers: users.length,
