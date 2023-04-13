@@ -56,11 +56,10 @@ exports.createUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         id = req.params.id;
-        const users = await User.findById(id);
+        const user = await User.findById(id);
         res.status(200).json({
             status: "Success",
-            NumberOfUsers: users.length,
-            data: { users },
+            data: { user },
         });
     } catch (error) {
         res.status(404).json({
